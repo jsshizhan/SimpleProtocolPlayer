@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     playButton.setOnClickListener(this);
     stopButton.setOnClickListener(this);
 
+    onClick(playButton);
     // Allow full list to be shown on first focus
     ipAddrText.setOnTouchListener((v, event) -> {
       ipAddrText.showDropDown();
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     ipAddrText.setOnFocusChangeListener((v, hasFocus) -> {
       if (hasFocus && ipAddrText.getAdapter() != null) {
         ipAddrText.showDropDown();
+        onClick(playButton);
       }
 
     });
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
           }
 
         });
+
   }
 
   /**
