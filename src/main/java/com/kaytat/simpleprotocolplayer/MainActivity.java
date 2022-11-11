@@ -31,6 +31,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,6 +90,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     NON_WIFI_CONNECTED
   }
 
+  private Handler handler = new Handler();
+     private Runnable runnable = new Runnable() {
+         @Override
+         public void run() {
+           onClick(playButton);
+         }
+  };
+
   /**
    * Called when the activity is first created. Here, we simply set the
    * event listeners and start the background service ({@link MusicService})
@@ -108,8 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     playButton.setOnClickListener(this);
     stopButton.setOnClickListener(this);
-
-    onClick(playButton);
+    handler.postDelayed(runnable, 2000);
     // Allow full list to be shown on first focus
     ipAddrText.setOnTouchListener((v, event) -> {
       ipAddrText.showDropDown();
@@ -118,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     ipAddrText.setOnFocusChangeListener((v, hasFocus) -> {
       if (hasFocus && ipAddrText.getAdapter() != null) {
         ipAddrText.showDropDown();
-        onClick(playButton);
       }
 
     });
