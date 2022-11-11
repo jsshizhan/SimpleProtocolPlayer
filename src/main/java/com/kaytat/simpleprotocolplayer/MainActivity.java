@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
-
+    Toast.makeText(this, "自启动成功了！", Toast.LENGTH_LONG).show();
     ipAddrText = findViewById(R.id.editTextIpAddr);
     audioPortText = findViewById(R.id.editTextAudioPort);
 
