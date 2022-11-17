@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
-    Toast.makeText(this, "自启动成功了！", Toast.LENGTH_LONG).show();
     ipAddrText = findViewById(R.id.editTextIpAddr);
     audioPortText = findViewById(R.id.editTextAudioPort);
 
@@ -161,43 +160,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   static final String USE_PERFORMANCE_MODE_PREF = "USE_PERFORMANCE_MODE";
   static final String USE_MIN_BUFFER_PREF = "USE_MIN_BUFFER";
 
-  ArrayList<String> getListFromPrefs(SharedPreferences prefs, String keyJson,
-      String keySingle) {
-    // Retrieve the values from the shared preferences
-    String jsonString = prefs.getString(keyJson, null);
-    ArrayList<String> arrayList = new ArrayList<>();
 
-    if (jsonString == null || jsonString.length() == 0) {
-      // Try to fill with the original key used
-      String single = prefs.getString(keySingle, null);
-      if (single != null && single.length() != 0) {
-        arrayList.add(single);
-      }
-    } else {
-      try {
-        JSONObject jsonObject = new JSONObject(jsonString);
-
-        // Note that the array is hard-coded as the element labelled
-        // as 'list'
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        for (int i = 0; i < jsonArray.length(); i++) {
-          String s = (String) jsonArray.get(i);
-          if (s != null && s.length() != 0) {
-            arrayList.add(s);
-          }
-        }
-      } catch (JSONException jsonException) {
-        Log.i(TAG, jsonException.toString());
-      }
-    }
-
-    return arrayList;
-  }
 
   private ArrayList<String> getUpdatedArrayList(SharedPreferences prefs,
       AutoCompleteTextView view, String keyJson, String keySingle) {
     // Retrieve the values from the shared preferences
-    ArrayList<String> arrayList = getListFromPrefs(prefs, keyJson, keySingle);
+    ArrayList<String> arrayList = Util.getListFromPrefs(prefs, keyJson, keySingle);
 
     // Make sure the most recent IP is on top
     arrayList.remove(view.getText().toString());
@@ -291,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     super.onResume();
     SharedPreferences myPrefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
 
-    ipAddrList = getListFromPrefs(myPrefs, IP_JSON_PREF, IP_PREF);
+    ipAddrList = Util.getListFromPrefs(myPrefs, IP_JSON_PREF, IP_PREF);
     ipAddrAdapter =
         new NoFilterArrayAdapter<>(this, android.R.layout.simple_list_item_1,
             ipAddrList);
@@ -306,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
           WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    audioPortList = getListFromPrefs(myPrefs, PORT_JSON_PREF, PORT_PREF);
+    audioPortList = Util.getListFromPrefs(myPrefs, PORT_JSON_PREF, PORT_PREF);
     audioPortAdapter =
         new NoFilterArrayAdapter<>(this, android.R.layout.simple_list_item_1,
             audioPortList);
